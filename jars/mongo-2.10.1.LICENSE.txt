@@ -1,0 +1,4 @@
+MongoDB Java Driver
+
+Homepage: https://github.com/mongodb/mongo-java-driver
+License:  https://raw.github.com/mongodb/mongo-java-driver/master/LICENSE.txt
