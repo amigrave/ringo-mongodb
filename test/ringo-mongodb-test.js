@@ -1,15 +1,17 @@
 var mongo = require("../");
 var assert = require("assert");
 
+var db = mongo.connect("mongodb://localhost/testing_ringo_mongodb");
+
 // Connection and basic tests
 exports.testConnection = function() {
-    var dbtest = mongo.connect("mongodb://localhost/test");
-    var client = mongo.connect("mongodb://localhost/");
-    var dbtest2 = client.getDB('test');
+    var client = mongo.connect("mongodb://localhost");
     var client2 = new mongo.MongoClient("localhost");
     var client3 = new mongo.MongoClient("localhost", 27017);
 
-    // test java method
+    // test defaults
+    assert.equal(client.toString(), client2.toString());
+    assert.equal(client2.toString(), client3.toString());
     assert.equal(client3.toString(), 'Mongo: localhost/127.0.0.1:27017');
 
     // test getter
