@@ -1,0 +1,4 @@
+mongodb-rhino
+
+Homepage: http://code.google.com/p/mongodb-rhino/
+License:  http://www.apache.org/licenses/LICENSE-2.0
