@@ -5,7 +5,9 @@ MongoDB driver for Ringo.js
 It wraps the [official Java driver](https://github.com/mongodb/mongo-java-driver) and emulates its behavior, while adding some
 JavaScript sugar and convenience methods.
 
-Mongodb's Extended JSON format and BSON support is provided by [mongodb-rhino](http://code.google.com/p/mongodb-rhino/)
-also included in this project.
+[Mongodb's Extended JSON
+format](http://www.mongodb.org/display/DOCS/Mongo+Extended+JSON) support is provided by [mongodb-rhino](http://code.google.com/p/mongodb-rhino/)
+which is also included in this project.
 
-WIP - This is a work in progress
+
+*WARNING - This is a work in progress*
