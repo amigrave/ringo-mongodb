@@ -15,6 +15,11 @@ License
 - The [MongoDB Java driver](https://github.com/mongodb/mongo-java-driver) is licensed under [the Apache License](http://opensource.org/licenses/Apache-2.0)
 - The [mongodb-rhino package](http://www.mongodb.org/display/DOCS/Mongo+Extended+JSON) is licensed under [the Apache License](http://opensource.org/licenses/Apache-2.0)
 
+Note
+----
+
+A slightly modified version of the [Sergi](https://github.com/sergi)'s [narwhal-mongodb](https://github.com/sergi/narwhal-mongodb)'s [test suite](https://github.com/sergi/narwhal-mongodb/tree/master/tests) has been included in this project.
+
 Warning
 -------
 

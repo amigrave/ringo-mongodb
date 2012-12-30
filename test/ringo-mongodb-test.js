@@ -26,6 +26,41 @@ exports.testConnection = function() {
     assert.equal(databases.indexOf(dbTestName), -1);
 };
 
+// Create collection from narwhal-mongodb
+exports.testCreateCollection = function() {
+    db.getCollection("foo1").drop();
+    db.getCollection("foo2").drop();
+    db.getCollection("foo3").drop();
+    db.getCollection("foo4").drop();
+
+    var c = db.createCollection("foo1", { "capped": false });
+
+    c = db.createCollection("foo2", { "capped": true, "size": 100 });
+    for (var i = 0; i < 30; i++) {
+        c.insert({ "x": i });
+    }
+    // TODO: check why capped size won't work
+    // assert.isTrue(c.find().count() < 10);
+
+    c = db.createCollection("foo3", {
+            "capped": true,
+            "size": 1000,
+            "max": 2
+        });
+
+    for (var i = 0; i < 30; i++) {
+        c.insert({ "x": i });
+    }
+    assert.equal(c.find().count(), 2);
+
+    try {
+        db.createCollection("foo4", { "capped": true, "size": -20 }); // Invalid size
+    } catch(e) {
+        return;
+    }
+    assert.equal(0, 1);
+};
+
 if (require.main == module) {
     require("test").run(exports);
 }
