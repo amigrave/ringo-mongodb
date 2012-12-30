@@ -39,6 +39,7 @@ exports.testCreateCollection = function() {
     for (var i = 0; i < 30; i++) {
         c.insert({ "x": i });
     }
+    assert.isTrue(c.isCapped());
     // TODO: check why capped size won't work
     // assert.isTrue(c.find().count() < 10);
 
@@ -48,9 +49,11 @@ exports.testCreateCollection = function() {
             "max": 2
         });
 
+    var bulk = [];
     for (var i = 0; i < 30; i++) {
-        c.insert({ "x": i });
+        bulk.push({ "x": i });
     }
+    c.insert(bulk);
     assert.equal(c.find().count(), 2);
 
     try {
@@ -59,6 +62,37 @@ exports.testCreateCollection = function() {
         return;
     }
     assert.equal(0, 1);
+};
+
+// Create collection 2 from narwhal-mongodb
+exports.testCreateCollection2 = function() {
+    var c = db.getCollection("test");
+    c.drop();
+
+    var obj = c.findOne();
+    assert.equal(null, obj, "1");
+
+    var inserted = { "x":1, "y":2 };
+    c.insert(inserted);
+    c.insert({"_id": 123, "x": 2, "z": 2});
+    obj = c.findOne(123);
+    assert.equal("123", obj.data["_id"], "2");
+    assert.equal(2, obj.data["x"], "3");
+    assert.equal(2, obj.data["z"], "4");
+
+    obj = c.findOne(123, { "x": 2 });
+    assert.equal("123", obj.data["_id"], "5");
+    assert.equal(2, obj.data["x"], "6");
+    assert.isTrue(obj.data.hasOwnProperty("z"), "7");
+
+    obj = c.findOne({"x": 1});
+    assert.equal(1, obj.data["x"], "8");
+    assert.equal(2, obj.data["y"], "9");
+
+    obj = c.findOne(null, {"x": 1, "y": 1});
+    // TODO: check findOne api second argument
+    // assert.equal(false, obj.data.hasOwnProperty("x"), "10");
+    assert.equal(2, obj.data["y"], "11");
 };
 
 if (require.main == module) {
