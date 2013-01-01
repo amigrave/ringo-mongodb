@@ -7,7 +7,6 @@ var assert = require("assert");
 var dbTestName = "testing_ringo_mongodb";
 var db = mongo.connect("mongodb://localhost/" + dbTestName);
 
-// Create collection from narwhal-mongodb
 exports.testCreateCollection = function() {
     db.getCollection("foo1").drop();
     db.getCollection("foo2").drop();
@@ -45,7 +44,6 @@ exports.testCreateCollection = function() {
     assert.equal(0, 1);
 };
 
-// Create collection 2 from narwhal-mongodb
 exports.testCreateCollection2 = function() {
     var c = db.getCollection("test");
     c.drop();
@@ -73,6 +71,32 @@ exports.testCreateCollection2 = function() {
     obj = c.findOne({}, {"x": 1, "y": 1});
     assert.isTrue(obj.data.hasOwnProperty("x"), "10");
     assert.equal(2, obj.data["y"], "11");
+};
+
+exports.testDropIndex = function() {
+    var c = db.getCollection("dropindex1");
+    c.drop();
+    c.save({ "x": 1 });
+
+    assert.equal(1, c.getIndexInfo().length, "11");
+
+    c.ensureIndex({ "x": 1 });
+    assert.equal(2, c.getIndexInfo().length, "12");
+
+    c.dropIndexes();
+    assert.equal(1, c.getIndexInfo().length, "13");
+
+    c.ensureIndex({ "x": 1 });
+    assert.equal(2 , c.getIndexInfo().length, "14");
+
+    c.ensureIndex({ "y": 1 }, { name: 'y_idx' });
+    assert.equal(3, c.getIndexInfo().length, "15");
+
+    c.dropIndex({ "x": 1 });
+    assert.equal(2, c.getIndexInfo().length, "16");
+
+    c.dropIndex('y_idx');
+    assert.equal(1, c.getIndexInfo().length, "17");
 };
 
 if (require.main == module) {
