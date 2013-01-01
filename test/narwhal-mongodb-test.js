@@ -99,6 +99,36 @@ exports.testDropIndex = function() {
     assert.equal(1, c.getIndexInfo().length, "17");
 };
 
+exports.testRemove = function() {
+    var c = db.getCollection("test");
+    c.drop();
+
+    c.insert({ "_id": 123, "x": 100 });
+    var obj = c.findOne();
+    assert.isFalse(obj === null, "18");
+
+    c.remove({"x": 100});
+    obj = c.findOne();
+    assert.isTrue(obj === null, "19");
+};
+
+exports.testSave = function() {
+
+//     TODO: have to decide if I drop MongoDocument in favor to plain object.
+//     In this case I will generate id's like narwhal-mongodb.
+
+//     var c = db.getCollection("test");
+//     c.drop();
+
+//     var insertable = { "hello": "world" };
+//     c.save(insertable);
+//     var id = insertable._id.toString();
+//     var doc = c.findOne();
+//     var docId = doc._id.toString();
+//     assert.isTrue(docId == id, "17");
+//     assert.isTrue(Packages.com.mongodb.ObjectId.isValid(id));
+};
+
 if (require.main == module) {
     require("test").run(exports);
 }
