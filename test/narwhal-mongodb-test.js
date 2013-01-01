@@ -61,18 +61,17 @@ exports.testCreateCollection2 = function() {
     assert.equal(2, obj.data["x"], "3");
     assert.equal(2, obj.data["z"], "4");
 
-    obj = c.findOne(123, { "x": 2 });
+    obj = c.findOne(123, { "x": 1 });
     assert.equal("123", obj.data["_id"], "5");
     assert.equal(2, obj.data["x"], "6");
-    assert.isTrue(obj.data.hasOwnProperty("z"), "7");
+    assert.isFalse(obj.data.hasOwnProperty("z"), "7");
 
     obj = c.findOne({"x": 1});
     assert.equal(1, obj.data["x"], "8");
     assert.equal(2, obj.data["y"], "9");
 
-    obj = c.findOne(null, {"x": 1, "y": 1});
-    // TODO: check findOne api second argument
-    // assert.equal(false, obj.data.hasOwnProperty("x"), "10");
+    obj = c.findOne({}, {"x": 1, "y": 1});
+    assert.isTrue(obj.data.hasOwnProperty("x"), "10");
     assert.equal(2, obj.data["y"], "11");
 };
 
