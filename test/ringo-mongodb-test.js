@@ -27,7 +27,8 @@ exports.testConnection = function() {
 };
 
 exports.testCollectionCount = function() {
-    var col = db.getCollection('test_cursor');
+    var col = db.getCollection('test_collection');
+    col.insert({ msg: 'Hi there' });
     col.remove({});
     assert.equal(col.count(), 0);
 
@@ -42,8 +43,39 @@ exports.testCollectionCount = function() {
         col.insert({ "x": i });
     }
     assert.equal(col.count(), n);
-    assert.equal(col.count({ x : { $lt : 50 }}), 50);
-    assert.equal(col.count({ x : { $gt : 50 }}), 49);
+    assert.equal(col.count({ x : { $lt : 50 }}), n / 2);
+    assert.equal(col.count({ x : { $gt : 50 }}), n / 2 - 1);
+};
+
+exports.testCursor = function() {
+    var col = db.getCollection('test_cursor');
+
+    var n = 100;
+    for (var i = 0; i < n; i++) {
+        col.insert({ x: i, y: i % 2 });
+    }
+    var all = col.find();
+    assert.equal(all.count(), n);
+    assert.equal(all.toArray().length, n);
+
+    var odd = col.find({ y: 1 });
+    assert.equal(odd.count(), n / 2);
+
+    odd.limit(n / 4);
+    assert.equal(odd.toArray().length, n / 4);
+
+    var even = col.find({ y: 0 });
+    assert.equal(even.count(), n / 2);
+    even.skip(n / 2);
+    assert.isFalse(even.hasNext());
+
+    var quarter = col.find({ x: { $lt: n / 4 } }).skip(n / 10);
+    assert.equal(quarter.count(), n / 4);
+    assert.isNull(quarter.curr());
+
+    var doc = quarter.next();
+    assert.equal(doc.data.x, n / 10);
+    assert.equal(doc.data._id.toString(), quarter.curr().data._id.toString());
 };
 
 if (require.main == module) {
