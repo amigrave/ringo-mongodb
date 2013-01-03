@@ -26,6 +26,26 @@ exports.testConnection = function() {
     assert.equal(databases.indexOf(dbTestName), -1);
 };
 
+exports.testCollectionCount = function() {
+    var col = db.getCollection('test_cursor');
+    col.remove({});
+    assert.equal(col.count(), 0);
+
+    col.insert({ msg: 'Hi there' });
+    assert.equal(col.count(), 1);
+
+    col.drop();
+    assert.equal(col.count(), 0);
+
+    var n = 100;
+    for (var i = 0; i < n; i++) {
+        col.insert({ "x": i });
+    }
+    assert.equal(col.count(), n);
+    assert.equal(col.count({ x : { $lt : 50 }}), 50);
+    assert.equal(col.count({ x : { $gt : 50 }}), 49);
+};
+
 if (require.main == module) {
     require("test").run(exports);
 }
