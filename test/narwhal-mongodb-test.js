@@ -129,6 +129,68 @@ exports.testSave = function() {
 //     assert.isTrue(Packages.com.mongodb.ObjectId.isValid(id));
 };
 
+exports.testCount = function() {
+    var c = db.getCollection("test");
+    c.drop();
+    assert.equal(0, c.find().count());
+    c.insert({"x": "foo"});
+    assert.equal(1, c.find().count());
+};
+
+exports.testSnapshot = function() {
+    var c = db.getCollection("snapshot1");
+    c.drop();
+    for ( var i=0; i<100; i++ ) {
+        c.save({ "x": i });
+    }
+    assert.equal( 100 , c.find().count() );
+    assert.equal( 100 , c.find().toArray().length );
+    assert.equal( 100 , c.find().snapshot().count() );
+    assert.equal( 100 , c.find().snapshot().toArray().length );
+    assert.equal( 100 , c.find().snapshot().limit(50).count() );
+    assert.equal( 50 , c.find().snapshot().limit(50).toArray().length );
+};
+
+exports.testBig = function() {
+    var c = db.getCollection("big1");
+    c.drop();
+
+    var bigString = "";
+    for ( var i=0; i<16000; i++ )
+        bigString += "x";
+
+    var numToInsert = Math.ceil(( 15 * 1024 * 1024 ) / bigString.length);
+
+    // TODO: fix upstram bug
+    // http://code.google.com/p/mongodb-rhino/issues/detail?id=6
+    //
+    // for (var i = 0; i < numToInsert; i++) {
+    //     c.save({ "x": i, "s": bigString });
+    // }
+
+    // assert.isTrue( 800 < numToInsert, "1");
+    // assert.equal( c.find().count(), numToInsert, "2");
+    // assert.equal( c.find().toArray().length, numToInsert, "3");
+    // assert.equal( c.find().limit(800).count(), numToInsert, "4");
+    // assert.equal( 800 , c.find().limit(800).toArray().length, "5");
+
+    // var x = c.find().batchSize(800).toArray().length;
+    // assert.isTrue( x < 800, "6");
+
+    // var a = c.find();
+    // assert.equal( numToInsert , a.itcount(), "7" );
+
+    // var b = c.find().batchSize( 10 );
+    // assert.equal( numToInsert , b.itcount(), "8" );
+    // assert.equal( 10 , b.getSizes()[0], "9" );
+
+    // assert.isTrue( a.numGetMores() < b.numGetMores(), "10" );
+    // assert.equal( numToInsert , c.find().batchSize(2).toArray().slice().length, "11" );
+    // assert.equal( numToInsert , c.find().batchSize(1).toArray().slice().length, "12" );
+    // assert.equal( numToInsert , _count( c.find( null , null , 0 , 5 ) ), "13" );
+    // assert.equal( 5 , _count( c.find( null , null , 0 , -5 ) ), "14" );
+};
+
 if (require.main == module) {
     require("test").run(exports);
 }
