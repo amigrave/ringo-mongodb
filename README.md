@@ -8,6 +8,35 @@ JavaScript sugar and convenience methods.
 [Mongodb's Extended JSON format](http://www.mongodb.org/display/DOCS/Mongo+Extended+JSON) support is provided by [mongodb-rhino](http://code.google.com/p/mongodb-rhino/)
 which is also included in this project.
 
+Examples
+--------
+
+```javascript
+var mongo = require('ringo-mongodb');
+var client = new mongo.MongoClient('localhost', 27017);
+var db = client.getDB('test_database');
+db.getCollectionNames().forEach(function(dbname) {
+    console.log(dbname);
+});
+```
+
+```javascript
+// You can easily connect to a given database using a connect URI
+var db = require('ringo-mongodb').connect('mongodb://localhost/test_database');
+var col = db.getCollection('myCollection');
+
+col.drop();
+
+var doc = {
+   greet : "Hello"
+   name : "World",
+};
+
+col.insert(doc);
+var myDoc = col.findOne();
+console.log(myDoc.data);
+```
+
 License
 -------
 
