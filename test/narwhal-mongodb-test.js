@@ -152,6 +152,15 @@ exports.testSnapshot = function() {
 };
 
 exports.testBig = function() {
+    var _count = function(i) {
+        var c = 0;
+        while (i.hasNext()){
+            i.next();
+            c++;
+        }
+        return c;
+    };
+
     var c = db.getCollection("big1");
     c.drop();
 
@@ -174,19 +183,43 @@ exports.testBig = function() {
     var x = c.find().batchSize(800).toArray().length;
     assert.equal( x, numToInsert, "6");
 
-    // var a = c.find();
-    // assert.equal( numToInsert , a.itcount(), "7" );
+    var a = c.find();
+    assert.equal( numToInsert , a.itcount(), "7" );
 
-    // var b = c.find().batchSize( 10 );
-    // assert.equal( numToInsert , b.itcount(), "8" );
-    // assert.equal( 10 , b.getSizes()[0], "9" );
+    var b = c.find().batchSize( 10 );
+    assert.equal( numToInsert , b.itcount(), "8" );
 
-    // assert.isTrue( a.numGetMores() < b.numGetMores(), "10" );
-    // assert.equal( numToInsert , c.find().batchSize(2).toArray().slice().length, "11" );
-    // assert.equal( numToInsert , c.find().batchSize(1).toArray().slice().length, "12" );
-    // assert.equal( numToInsert , _count( c.find( null , null , 0 , 5 ) ), "13" );
-    // assert.equal( 5 , _count( c.find( null , null , 0 , -5 ) ), "14" );
+    assert.equal( numToInsert , c.find().batchSize(2).toArray().slice().length, "11" );
+    assert.equal( numToInsert , c.find().batchSize(1).toArray().slice().length, "12" );
 };
+
+exports.testExplain = function() {
+    var c = db.getCollection( "explain1" );
+    c.drop();
+
+    for ( var i=0; i<100; i++ )
+        c.save({"x": i });
+
+    var q = {"x" : {"$gt": 50 }};
+
+    assert.equal( 49, c.find(q).count(), "1" );
+    assert.equal( 49, c.find(q).toArray().length, "2" );
+    assert.equal( 49, c.find(q).itcount(), "3" );
+    assert.equal( 20, c.find(q).limit(20).itcount(), "4" );
+
+    c.ensureIndex({"x": 1 });
+
+    assert.equal( 49, c.find(q).count(), "5" );
+    assert.equal( 49, c.find(q).toArray().length, "6" );
+    assert.equal( 49, c.find(q).itcount(), "7" );
+    assert.equal( 20, c.find(q).limit(20).itcount(), "8" );
+    assert.equal( 49, c.find(q).explain().n, "9" );
+
+    // these 2 are 'reersed' b/ e want the user case to make sense
+    assert.equal( 20, c.find(q).limit(20).explain().n, "10" );
+    assert.equal( 49, c.find(q).batchSize(20).explain().n, "11 " );
+};
+
 
 if (require.main == module) {
     require("test").run(exports);
