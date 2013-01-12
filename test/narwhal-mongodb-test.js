@@ -171,8 +171,8 @@ exports.testBig = function() {
     assert.equal( c.find().limit(800).count(), numToInsert, "4");
     assert.equal( 800 , c.find().limit(800).toArray().length, "5");
 
-    // var x = c.find().batchSize(800).toArray().length;
-    // assert.isTrue( x < 800, "6");
+    var x = c.find().batchSize(800).toArray().length;
+    assert.equal( x, numToInsert, "6");
 
     // var a = c.find();
     // assert.equal( numToInsert , a.itcount(), "7" );
