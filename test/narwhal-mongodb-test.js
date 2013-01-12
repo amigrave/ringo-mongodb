@@ -161,18 +161,15 @@ exports.testBig = function() {
 
     var numToInsert = Math.ceil(( 15 * 1024 * 1024 ) / bigString.length);
 
-    // TODO: fix upstram bug
-    // http://code.google.com/p/mongodb-rhino/issues/detail?id=6
-    //
-    // for (var i = 0; i < numToInsert; i++) {
-    //     c.save({ "x": i, "s": bigString });
-    // }
+    for (var i = 0; i < numToInsert; i++) {
+        c.save({ "x": i, "s": bigString });
+    }
 
-    // assert.isTrue( 800 < numToInsert, "1");
-    // assert.equal( c.find().count(), numToInsert, "2");
-    // assert.equal( c.find().toArray().length, numToInsert, "3");
-    // assert.equal( c.find().limit(800).count(), numToInsert, "4");
-    // assert.equal( 800 , c.find().limit(800).toArray().length, "5");
+    assert.isTrue( 800 < numToInsert, "1");
+    assert.equal( c.find().count(), numToInsert, "2");
+    assert.equal( c.find().toArray().length, numToInsert, "3");
+    assert.equal( c.find().limit(800).count(), numToInsert, "4");
+    assert.equal( 800 , c.find().limit(800).toArray().length, "5");
 
     // var x = c.find().batchSize(800).toArray().length;
     // assert.isTrue( x < 800, "6");
