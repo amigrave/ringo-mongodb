@@ -1,12 +1,17 @@
 MongoDB driver for Ringo.js
 ===========================
 
-**ringo-mongodb** is a CommonJS-compliant JavaScript driver for the Mongo database.
-It wraps the [official Java driver](https://github.com/mongodb/mongo-java-driver) and emulates its behavior, while adding some
-JavaScript sugar and convenience methods.
+**ringo-mongodb** is a CommonJS-compliant wrapper around the [official MongoDB Java driver](https://github.com/mongodb/mongo-java-driver).
 
 [Mongodb's Extended JSON format](http://www.mongodb.org/display/DOCS/Mongo+Extended+JSON) support is provided by [mongodb-rhino](http://code.google.com/p/mongodb-rhino/)
 which is also included in this project.
+
+Installation
+------------
+
+    ringo-admin install amigrave/ringo-mongodb
+
+*_WARNING_*: This is a work in progress. This module will be available on [ringo packages](http://packages.ringojs.org) as soon as the api is stable.
 
 Examples
 --------
@@ -49,7 +54,3 @@ Note
 
 A slightly modified version of the [Sergi](https://github.com/sergi)'s [narwhal-mongodb](https://github.com/sergi/narwhal-mongodb)'s [test suite](https://github.com/sergi/narwhal-mongodb/tree/master/tests) has been included in this project.
 
-Warning
--------
-
-This is a work in progress
