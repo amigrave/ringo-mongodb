@@ -12,6 +12,8 @@ docs:
 	@xdg-open $(DOCS_ENTRY_PAGE) || open $(DOCS_ENTRY_PAGE)
 
 livedocs:
-	@yuidoc -C --server lib #-T yuidoc-bootstrap-theme
+	@yuidoc -C --server lib & #-T yuidoc-bootstrap-theme 
 	@xdg-open $(LIVEDOCS_URL) || open $(LIVEDOCS_URL)
 
+www:
+	@rsync -av --delete ./docs/* $(HOSTING):~/www/p/ringo-mongodb

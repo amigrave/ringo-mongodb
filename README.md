@@ -42,6 +42,11 @@ var myDoc = col.findOne();
 console.log(myDoc.data);
 ```
 
+Documentation
+-------------
+
+[Browse the API](http://amigrave.com/p/ringo-mongodb/)
+
 License
 -------
 
