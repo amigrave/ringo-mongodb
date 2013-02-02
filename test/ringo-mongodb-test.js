@@ -15,8 +15,8 @@ exports.testConnection = function() {
     assert.equal(client2.toString(), client3.toString());
     assert.equal(client3.toString(), '[MongoClient: localhost/127.0.0.1:27017]');
 
-    // test getter
-    assert.equal(client3.getVersion(), client3.version);
+    // test version getter
+    assert.matches(client3.version, /^\d+\.\d+\.\d+$/);
 
     // Ensure test database is dropped
     var db = client.getDB(dbTestName);
