@@ -52,7 +52,7 @@ License
 
 - This software is licensed under [the MIT license](http://opensource.org/licenses/MIT)
 - The [MongoDB Java driver](https://github.com/mongodb/mongo-java-driver) is licensed under [the Apache License](http://opensource.org/licenses/Apache-2.0)
-- The [mongodb-rhino package](http://www.mongodb.org/display/DOCS/Mongo+Extended+JSON) is licensed under [the Apache License](http://opensource.org/licenses/Apache-2.0)
+- The [mongodb-rhino package](http://code.google.com/p/mongodb-rhino/) is licensed under [the Apache License](http://opensource.org/licenses/Apache-2.0)
 
 Note
 ----
