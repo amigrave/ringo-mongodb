@@ -28,18 +28,33 @@ db.getCollectionNames().forEach(function(dbname) {
 ```javascript
 // You can easily connect to a given database using a connect URI
 var db = require('ringo-mongodb').connect('mongodb://localhost/test_database');
-var col = db.getCollection('myCollection');
 
-col.drop();
+db.getCollectionNames();
+// []
+
+var col = db.getCollection('myCollection');
+col.count();
+// 0
 
 var doc = {
    greet : "Hello"
    name : "World",
 };
-
 col.insert(doc);
+col.count();
+// 1
+
 var myDoc = col.findOne();
-console.log(myDoc.data);
+myDoc.id
+//'517c2ef83004306ea66a08f2'
+
+Object.keys(myDoc.data)
+// [ '_id', 'greet', 'name' ]
+
+>> db.getCollectionNames();
+[ 'myCollection', 'system.indexes' ]
+
+col.drop();
 ```
 
 Documentation
