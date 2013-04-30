@@ -78,6 +78,18 @@ exports.testCursor = function() {
     assert.equal(doc.data._id.toString(), quarter.curr().data._id.toString());
 };
 
+exports.testDocument = function() {
+    var col = db.getCollection('test_document');
+    var dict = { a: 1, b: 2 };
+    col.save(dict);
+    var doc = col.findOne(dict._id);
+    var json = doc.toJSON();
+    assert.ok(json.match(/^{.*}$/));
+    assert.ok(json.match(/"_id":".+"/));
+    assert.ok(json.match(/"a":1/));
+    assert.ok(json.match(/"b":2/));
+};
+
 if (require.main == module) {
     require("test").run(exports);
 }

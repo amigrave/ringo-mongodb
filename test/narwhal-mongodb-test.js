@@ -113,20 +113,16 @@ exports.testRemove = function() {
 };
 
 exports.testSave = function() {
+     var c = db.getCollection("test");
+     c.drop();
 
-//     TODO: have to decide if I drop MongoDocument in favor to plain object.
-//     In this case I will generate id's like narwhal-mongodb.
-
-//     var c = db.getCollection("test");
-//     c.drop();
-
-//     var insertable = { "hello": "world" };
-//     c.save(insertable);
-//     var id = insertable._id.toString();
-//     var doc = c.findOne();
-//     var docId = doc._id.toString();
-//     assert.isTrue(docId == id, "17");
-//     assert.isTrue(Packages.com.mongodb.ObjectId.isValid(id));
+     var insertable = { "hello": "world" };
+     c.save(insertable);
+     var id = insertable._id.toString();
+     var doc = c.findOne();
+     var docId = doc.id;
+     assert.isTrue(docId == id, "17");
+     assert.isTrue(Packages.org.bson.types.ObjectId.isValid(id));
 };
 
 exports.testCount = function() {
